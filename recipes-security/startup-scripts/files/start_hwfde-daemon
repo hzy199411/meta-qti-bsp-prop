@@ -1,0 +1,44 @@
+#!/bin/sh
+# Copyright (c) 2018 Qualcomm Technologies, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Qualcomm Technologies, Inc.
+
+set -e
+
+soc_id=`cat /sys/devices/soc0/soc_id`
+count=0
+
+if [[ "$soc_id" -ne "290" && "$soc_id" -ne "296" && "$soc_id" -ne "297" && "$soc_id" -ne "298" && "$soc_id" -ne "299" ]]; then
+    case "$1" in
+      start)
+            echo -n "Starting securemsm hwfde daemon....: "
+            start-stop-daemon -S -b -a /usr/bin/hwfde_service
+
+            ## wait 10s for /data partition mount
+            while [ "`ls -A /data`" == "" ]; do
+                sleep 0.1
+                count=$(($count + 1));
+                if [ $count -ge 100 ];then
+                    echo "ERROR: can't find the /data partition"
+                    exit 1
+                fi
+            done
+            echo "done"
+            ;;
+      stop)
+            echo -n "Stoping securemsm hwfde daemon......: "
+            start-stop-daemon -K -n hwfde_service
+            echo "done"
+            ;;
+      restart)
+            $0 stop
+            $0 start
+            ;;
+      *)
+            echo "Usage hwfde_service { start | stop | restart}" >&2
+            exit 1
+            ;;
+    esac
+fi
+
+exit 0

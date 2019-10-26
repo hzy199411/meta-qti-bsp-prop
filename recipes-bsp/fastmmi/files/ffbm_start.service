@@ -1,0 +1,12 @@
+# Copyright (c) 2018 Qualcomm Technologies, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Qualcomm Technologies, Inc.
+
+[Unit]
+Description=FFBM mode enable checking script
+
+[Service]
+ExecStart=/bin/sh /usr/bin/ffbm_start.sh
+
+[Install]
+WantedBy=multi-user.target

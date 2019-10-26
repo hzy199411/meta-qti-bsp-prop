@@ -1,0 +1,10 @@
+[Unit]
+Description=Sensors Daemon Service
+SourcePath=/usr/bin/sensors.qti
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/sensors.qti
+
+[Install]
+WantedBy=multi-user.target

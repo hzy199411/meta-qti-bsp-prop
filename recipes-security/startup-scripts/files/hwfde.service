@@ -1,0 +1,21 @@
+# Copyright (c) 2018 Qualcomm Technologies, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Qualcomm Technologies, Inc.
+#
+
+[Unit]
+Description=FDE Service
+SourcePath=/etc/initscripts/hwfde_service
+Before=label-data.service
+After=qseecomd.service
+Requires=qseecomd.service label-data.service
+
+[Service]
+Type=oneshot
+Restart=no
+RemainAfterExit=yes
+ExecStart=/etc/initscripts/hwfde_service start
+ExecStop=/etc/initscripts/hwfde_service stop
+
+[Install]
+WantedBy=multi-user.target
